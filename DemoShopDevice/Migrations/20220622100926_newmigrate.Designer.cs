@@ -22,49 +22,7 @@ namespace DemoShopDevice.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ProjectDemo.Model.Backet", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("backet");
-                });
-
-            modelBuilder.Entity("ProjectDemo.Model.Backet_device", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("backet_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("device_id")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("backet_id");
-
-                    b.HasIndex("device_id");
-
-                    b.ToTable("backet_device");
-                });
-
+            
             modelBuilder.Entity("ProjectDemo.Model.Rating", b =>
                 {
                     b.Property<int>("Id")
@@ -198,37 +156,6 @@ namespace DemoShopDevice.Migrations
 
                     b.ToTable("type_device");
                 });
-
-            modelBuilder.Entity("ProjectDemo.Model.Backet", b =>
-                {
-                    b.HasOne("ProjectDemo.Model.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ProjectDemo.Model.Backet_device", b =>
-                {
-                    b.HasOne("ProjectDemo.Model.Backet", "Backet")
-                        .WithMany()
-                        .HasForeignKey("backet_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SiteShopCar.Model.Device", "Device")
-                        .WithMany()
-                        .HasForeignKey("device_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Backet");
-
-                    b.Navigation("Device");
-                });
-
             modelBuilder.Entity("ProjectDemo.Model.Rating", b =>
                 {
                     b.HasOne("SiteShopCar.Model.Device", "Device")
