@@ -1,11 +1,13 @@
-﻿using DeviceShop.Repository;
+﻿using DemoShopDevice.Models;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
+using ShopDevice.Repository;
 using SiteShopCar.Data;
 using SiteShopCar.Model;
 
 namespace DeviceShop.Services
 {
-    public class BrandService: IBrandReposirory, IDisposable
+    public class BrandService<T>: ICommonRepository<Brand>, IDisposable
     {
         private readonly DbApplicationContext _context;
 
@@ -15,28 +17,30 @@ namespace DeviceShop.Services
 
         }
 
-        public IEnumerable<Brand> GetBrands()
+        public PaginationDTO<Brand>  GetEntity(int page, int limit)
         {
-            return _context.Brands.ToList();
+            var listBrand = _context.Brands.ToPagedList(page, limit);
+
+            return new PaginationDTO<Brand>(listBrand, _context.Brands.Count());
         }
 
-        public Brand GetBrandByID(int? id)
+        public Brand GetEntityByID(int? id)
         {
             return _context.Brands.Find(id);
         }
 
-        public void InsertBrand(Brand brand)
+        public void InsertEntity(Brand brand)
         {
             _context.Brands.Add(brand);
         }
 
-        public void DeleteBrand(int brandID)
+        public void DeleteEntity(int brandID)
         {
             Brand brand = _context.Brands.Find(brandID);
             _context.Brands.Remove(brand);
         }
 
-        public void UpdateBrand(Brand brand)
+        public void UpdateEntity(Brand brand)
         {
             _context.Entry(brand).State = EntityState.Modified;
         }
