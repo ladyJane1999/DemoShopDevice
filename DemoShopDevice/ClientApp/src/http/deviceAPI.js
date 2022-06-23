@@ -21,11 +21,7 @@ export const fetchBrands = async () => {
 }
 
 export const createDevice = async (device) => {
-    const { data } = await $authHost.post('device', device, {
-        headers: {
-            "Content-type": "multipart/form-data"
-        }
-    }
+    const { data } = await $authHost.post('device', device
     )
     return data
 }
