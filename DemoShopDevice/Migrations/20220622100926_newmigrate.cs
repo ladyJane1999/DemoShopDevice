@@ -78,26 +78,7 @@ namespace DemoShopDevice.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "backet",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_backet", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_backet_user_UserId",
-                        column: x => x.UserId,
-                        principalTable: "user",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
+                
             migrationBuilder.CreateTable(
                 name: "rating",
                 columns: table => new
@@ -125,46 +106,6 @@ namespace DemoShopDevice.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "backet_device",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    device_id = table.Column<int>(type: "integer", nullable: false),
-                    backet_id = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_backet_device", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_backet_device_backet_backet_id",
-                        column: x => x.backet_id,
-                        principalTable: "backet",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_backet_device_device_device_id",
-                        column: x => x.device_id,
-                        principalTable: "device",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_backet_UserId",
-                table: "backet",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_backet_device_backet_id",
-                table: "backet_device",
-                column: "backet_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_backet_device_device_id",
-                table: "backet_device",
-                column: "device_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_device_brand_id",
@@ -189,15 +130,10 @@ namespace DemoShopDevice.Migrations
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "backet_device");
+       {
 
             migrationBuilder.DropTable(
                 name: "rating");
-
-            migrationBuilder.DropTable(
-                name: "backet");
 
             migrationBuilder.DropTable(
                 name: "device");
