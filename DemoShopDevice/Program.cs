@@ -22,11 +22,10 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 
 // configure DI for application services
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddTransient<IDeviceRepository<Device>, DeviceService<Device>>();
-builder.Services.AddTransient<IBrandReposirory, BrandService>();
-builder.Services.AddTransient<ITypeDevicesRepository, TypeDeviceServices>();
-
+builder.Services.AddScoped<IUserRepository, UserService>();
+builder.Services.AddTransient<ICommonRepository<Device>, DeviceService<Device>>();
+builder.Services.AddTransient<ICommonRepository<TypeDevice>, TypeDeviceServices<TypeDevice>>();
+builder.Services.AddTransient<ICommonRepository<Brand>, BrandService<Brand>>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
