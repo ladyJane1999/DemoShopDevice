@@ -21,16 +21,19 @@ const CreateDevice = observer(({show, onHide}) => {
         setFile(e.target.files[0])
     }
 
-    const addDevice = () => {
-        const formData = new FormData()
-        formData.append('name', name)
-        formData.append('price', `${price}`)
-        formData.append('img', file)
-        formData.append('brandId', device.selectedBrand)
-        formData.append('typeId', device.selectedType)
-        createDevice(formData).then(data => onHide())
+   const addDevice = () => {
+        const formImg = new FormData();
+        formImg.append('img', file)
+        console.log(formImg)
+        const newDevice = {
+            name: name,
+            price: price,
+            img: formImg,
+            brandId: device.selectedBrand.brandId,
+            typeId: device.selectedType.typeDeviceId
+        }
+        createDevice(newDevice).then(data => onHide())
     }
-
     return (
         <Modal
             show={show}
