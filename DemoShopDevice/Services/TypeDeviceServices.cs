@@ -1,11 +1,13 @@
-﻿using DeviceShop.Repository;
+using DemoShopDevice.Models;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
+using ShopDevice.Repository;
 using SiteShopCar.Data;
 using SiteShopCar.Model;
 
 namespace DeviceShop.Services
 {
-    public class TypeDeviceServices : ITypeDevicesRepository, IDisposable
+    public class TypeDeviceServices<T> : ICommonRepository<TypeDevice>, IDisposable
     {
         private readonly DbApplicationContext _context;
 
@@ -15,28 +17,30 @@ namespace DeviceShop.Services
 
         }
 
-        public IEnumerable<TypeDevice> GetTypeDevices()
+        public PaginationDTO<TypeDevice> GetEntity(int page, int limit)
         {
-            return _context.TypeDevices.ToList();
+            var listTypeDevice = _context.TypeDevices.ToPagedList(page, limit);
+
+            return new PaginationDTO<TypeDevice>(listTypeDevice, _context.TypeDevices.Count());
         }
 
-        public Device GetTypeDeviceByID(int? id)
+        public TypeDevice GetEntityByID(int? id)
         {
-            return _context.Devices.Find(id);
+            return _context.TypeDevices.Find(id);
         }
 
-        public void InsertTypeDevice(TypeDevice typeDevice)
+        public void InsertEntity(TypeDevice typeDevice)
         {
             _context.TypeDevices.Add(typeDevice);
         }
 
-        public void DeleteTypeDevice(int typeDevicetID)
+        public void DeleteEntity(int typeDevicetID)
         {
             TypeDevice typeDevice = _context.TypeDevices.Find(typeDevicetID);
             _context.TypeDevices.Remove(typeDevice);
         }
 
-        public void UpdateTypeDevice(TypeDevice typeDevice)
+        public void UpdateEntity(TypeDevice typeDevice)
         {
             _context.Entry(typeDevice).State = EntityState.Modified;
         }
@@ -67,4 +71,3 @@ namespace DeviceShop.Services
         }
     }
 }
-
