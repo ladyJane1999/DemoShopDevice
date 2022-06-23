@@ -46,7 +46,7 @@ namespace SiteShopCar.Controllers
         // POST: Devices/Create
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] Device device)
+        public async Task<IActionResult> Create([FromBody] Device device)
         {
 
             if (ModelState.IsValid)
@@ -56,7 +56,7 @@ namespace SiteShopCar.Controllers
 
             }
            
-            return Ok(new { message = "User created" });
+            return Ok(new { message = "Device created" });
         }
 
 
@@ -72,7 +72,7 @@ namespace SiteShopCar.Controllers
                 deviceRepository.UpdateDevice(device);
                 deviceRepository.Save();
             }
-            return Ok(new { message = "User updated" });
+            return Ok(new { message = "Device updated" });
         }
 
         // POST: Devices/Delete/5
@@ -83,7 +83,7 @@ namespace SiteShopCar.Controllers
         
             deviceRepository.DeleteDevice(id);
             deviceRepository.Save();
-            return Ok(new { message = "User deleted" });
+            return Ok(new { message = "Device deleted" });
         }
         protected override void Dispose(bool disposing)
         {
