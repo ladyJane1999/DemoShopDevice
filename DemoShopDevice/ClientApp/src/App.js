@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import  DevicePage from './pages/DevicePage';
 import Shop from './pages/Shop';
@@ -23,13 +23,13 @@ export default class App extends Component {
     render() {
   
       return (
-          <Routes>
-                  <Route path={SHOP_ROUTE} component={Shop} />
-                  <Route path={'/device/:id'} component={DevicePage} />
+          <Layout>
+              <Route path={SHOP_ROUTE} component={Shop} />
+              <Route path={'/device/:id'} component={DevicePage} />
               <Route path={REGISTRATION_ROUTE} component={Auth} />
               <Route path={BASKET_ROUTE} component={Basket} />   
-                  <Route path={ADMIN_ROUTE} component={Admin} />
-          </Routes>
+              <Route path={ADMIN_ROUTE} component={Admin} />
+          </Layout>
     );
   }
 }
