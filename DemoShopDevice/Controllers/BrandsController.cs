@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeviceShop.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ShopDevice.Repository;
 using SiteShopCar.Data;
 using SiteShopCar.Model;
 
@@ -16,18 +16,18 @@ namespace SiteShopCar.Controllers
     [Route("[controller]")]
     public class BrandsController : Controller
     {
-        private IBrandReposirory brandRepository;
+        private ICommonRepository<Brand> brandRepository;
 
-        public BrandsController(IBrandReposirory brandRepository)
+        public BrandsController(ICommonRepository<Brand> brandRepository)
         {
             this.brandRepository = brandRepository;
         }
 
         // GET: Devices
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page, [FromQuery] int limit)
         {
-            return Ok(brandRepository.GetBrands());
+            return Ok(brandRepository.GetEntity(page, limit));
         }
 
         // GET: Devices/Details/5
@@ -35,56 +35,38 @@ namespace SiteShopCar.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return BadRequest(new { message = "Device with this id does not exist" });
-            }
-
-            return Ok(brandRepository.GetBrandByID(id));
+            return Ok(brandRepository.GetEntityByID(id));
         }
 
         // POST: Devices/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Brand brand)
         {
-            if (brand.BrandId != null)
-            {
-                return BadRequest(new { message = "Device with this id does not exist" });
-            }
             if (ModelState.IsValid)
             {
-                brandRepository.InsertBrand(brand);
+                brandRepository.InsertEntity(brand);
                 brandRepository.Save();
-                return RedirectToAction(nameof(GetAll));
+              
             }
-            return RedirectToAction(nameof(GetAll));
+            return Ok(new { message = "Brand created" });
         }
 
 
 
         // POST: Devices/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPut]
         public async Task<IActionResult> Edit(int id, [FromBody] Brand brand)
         {
-            if (id != brand.BrandId)
-            {
-                return BadRequest(new { message = "Device with this id does not exist" });
-            }
 
             if (ModelState.IsValid)
             {
-                brandRepository.UpdateBrand(brand);
+                brandRepository.UpdateEntity(brand);
                 brandRepository.Save();
 
-                return RedirectToAction(nameof(GetAll));
             }
-            return RedirectToAction(nameof(GetAll));
+            return Ok(new { message = "Brand edited" });
         }
 
         // POST: Devices/Delete/5
@@ -92,14 +74,9 @@ namespace SiteShopCar.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (id == null)
-            {
-                return BadRequest(new { message = "Device with this id does not exist" });
-            }
-
-            brandRepository.DeleteBrand(id);
+            brandRepository.DeleteEntity(id);
             brandRepository.Save();
-            return RedirectToAction(nameof(GetAll));
+            return Ok(new { message = "Brand delited" });
         }
         protected override void Dispose(bool disposing)
         {
