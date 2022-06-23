@@ -12,9 +12,9 @@ namespace SiteShopCar.Data
         public DbSet<Brand> Brands { get; set; }
 
         public DbSet<TypeDevice> TypeDevices { get; set; }
-        public DbSet<Backet> Backet { get; set; }
-        public DbSet<Backet_device> Backet_device { get; set; }
+      
         public DbSet<Rating> Rating { get; set; }
+        
         public DbSet<Users> Users { get; set; }
 
         public DbApplicationContext(DbContextOptions<DbApplicationContext> options) : base(options)
