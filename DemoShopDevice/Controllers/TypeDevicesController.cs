@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeviceShop.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ShopDevice.Repository;
 using SiteShopCar.Data;
 using SiteShopCar.Model;
 
@@ -16,18 +16,17 @@ namespace SiteShopCar.Controllers
     [Route("[controller]")]
     public class TypeDevicesController : Controller
     {
-        private ITypeDevicesRepository typeDevicesRepository;
-
-        public TypeDevicesController(ITypeDevicesRepository typeDevicesRepository)
+        private ICommonRepository<TypeDevice> typeDevicesRepository;
+        public TypeDevicesController(ICommonRepository<TypeDevice> typeDevicesRepository)
         {
             this.typeDevicesRepository = typeDevicesRepository;
         }
 
-        // GET: Devices
+        // GET: TypeDevices
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int page, [FromQuery] int limit)
         {
-            return Ok(typeDevicesRepository.GetTypeDevices());
+            return Ok(typeDevicesRepository.GetEntity(page, limit));
         }
 
         // GET: Devices/Details/5
@@ -35,71 +34,49 @@ namespace SiteShopCar.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return BadRequest(new { message = "Device with this id does not exist" });
-            }
 
-            return Ok(typeDevicesRepository.GetTypeDeviceByID(id));
+            return Ok(typeDevicesRepository.GetEntityByID(id));
         }
 
         // POST: Devices/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPost]
    
         public async Task<IActionResult> Create([FromBody] TypeDevice typeDevice)
         {
-            if (typeDevice.TypeDeviceId != null)
-            {
-                return BadRequest(new { message = "Device with this id does not exist" });
-            }
+       
             if (ModelState.IsValid)
             {
-                typeDevicesRepository.InsertTypeDevice(typeDevice);
+                typeDevicesRepository.InsertEntity(typeDevice);
                 typeDevicesRepository.Save();
-                return RedirectToAction(nameof(GetAll));
+               
             }
-            return RedirectToAction(nameof(GetAll));
+            return Ok(new { message = "TypeDevice created" });
         }
 
 
 
         // POST: Devices/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPut]
         public async Task<IActionResult> Edit(int id, [FromBody] TypeDevice typeDevice)
         {
-            if (id != typeDevice.TypeDeviceId)
-            {
-                return BadRequest(new { message = "Device with this id does not exist" });
-            }
 
             if (ModelState.IsValid)
             {
-                typeDevicesRepository.UpdateTypeDevice(typeDevice);
+                typeDevicesRepository.UpdateEntity(typeDevice);
                 typeDevicesRepository.Save();
-
-                return RedirectToAction(nameof(GetAll));
             }
-            return RedirectToAction(nameof(GetAll));
+            return Ok(new { message = "TypeDevice edited" });
         }
 
         [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (id == null)
-            {
-                return BadRequest(new { message = "Device with this id does not exist" });
-            }
-
-            typeDevicesRepository.DeleteTypeDevice(id);
+            typeDevicesRepository.DeleteEntity(id);
             typeDevicesRepository.Save();
-            return RedirectToAction(nameof(GetAll));
+            return Ok(new { message = "TypeDevice delited" });
         }
         protected override void Dispose(bool disposing)
         {
