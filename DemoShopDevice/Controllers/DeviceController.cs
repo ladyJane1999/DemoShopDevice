@@ -44,11 +44,8 @@ namespace SiteShopCar.Controllers
         }
 
         // POST: Devices/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        
+        [Authorize]
         [HttpPost]
-     
         public async Task<IActionResult> Create([FromForm] Device device)
         {
 
@@ -65,8 +62,6 @@ namespace SiteShopCar.Controllers
 
 
         // POST: Devices/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPut]
         public async Task<IActionResult> Edit(int id, [FromBody] Device device)
